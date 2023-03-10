@@ -1,22 +1,26 @@
 package bootiful.kotlin
 
-fun doSomething() {
-    println("Hello".joshTransform())
-}
+import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.queryForObject
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
+import javax.sql.DataSource
 
-fun String.joshTransform(
-    transformer: (String) -> String = { input -> input.uppercase() }
-): String {
-    return transformer(this)
-}
 
 fun main() {
 
 
-    println("Josh".joshTransform())
-    println("Josh".joshTransform { str -> str.reversed() })
+    data class Customer(val name: String, val age: Int)
+
+    val db: DataSource = EmbeddedDatabaseBuilder().build()
+    val jdbc = JdbcTemplate(db)
+    val customer : Customer? = jdbc.queryForObject(
+        "select *  from customers", Customer::class.java
+    )
+    val customersWithKotlin = jdbc.queryForObject<Customer> ( "select * from customers")
 
 
 }
+
+
 
 
