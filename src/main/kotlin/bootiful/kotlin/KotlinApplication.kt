@@ -15,11 +15,11 @@ fun initSchema(jt: JdbcTemplate, classpathResourceName: String) {
     }
 }
 
-suspend fun main() {
+fun main() {
     data class Customer(val id: Int, val name: String)
-    val db: DataSource = EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build()
-    val jdbc = JdbcTemplate(db)
-        .apply { afterPropertiesSet() }
+
+    val dataSource: DataSource = EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build()
+    val jdbc = JdbcTemplate(dataSource).apply { afterPropertiesSet() }
     initSchema(jdbc, "/schema.sql")
     initSchema(jdbc, "/data.sql")
     val lambda: (ResultSet, Int) -> Customer = { rs, _ -> Customer(rs.getInt("id"), rs.getString("name")) }
