@@ -20,8 +20,6 @@ fun main(args: Array<String>) {
         addInitializers(beans {
 
             bean {
-
-
                 val http = ref<HttpSecurity>()
                 http {
                     httpBasic {}
@@ -29,7 +27,7 @@ fun main(args: Array<String>) {
                         authorize("/hello/**", hasAuthority("ROLE_ADMIN"))
                     }
                 }
-                    .run { http.build() }
+                .run { http.build() }
 
             }
 
